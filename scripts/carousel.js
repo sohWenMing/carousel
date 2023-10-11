@@ -14,6 +14,21 @@ document.addEventListener("DOMContentLoaded", () => {
         button.style.display = "inline-block";
     }
 
+    function setButtons(currentIndex) {
+        if (currentIndex === 0) {
+            hideButton(leftButton);
+        }
+        if (currentIndex !== indicators.length - 1) {
+            showButton(rightButton);
+        }
+        if(currentIndex !== 0) {
+            showButton(leftButton);
+        }
+        if(currentIndex === indicators.length - 1) {
+            hideButton(rightButton);
+        }
+    }
+
     function resetIndicators(indicators, index) {
         indicators.forEach((indicator) => {
             if (indicator.classList.contains("active")) {
@@ -27,6 +42,16 @@ document.addEventListener("DOMContentLoaded", () => {
         for(let i = 0; i < slideArray.length; i++) {
             slideArray[i].style.left = `${i * slideWidth}px`
         }
+    }
+
+    function moveTrack(targetSlide) {
+        const pxToMove = targetSlide.style.left;
+        track.style.transform = `translateX(-${pxToMove})`;
+    }
+
+    function setCurrentSlideClass(currentSlide, targetSlide) {
+        currentSlide.classList.remove('current--slide');
+        targetSlide.classList.add('current--slide');
     }
 
     setSlidesPosition(slides);
@@ -45,27 +70,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
         if (direction === "left") {
             currentIndex -= 1;
-            targetSlide = currentSlide.previousElementSibling
+            targetSlide = currentSlide.previousElementSibling;
         }
         if (direction === "right") {
             currentIndex += 1;
-            targetSlide = currentSlide.nextElementSibling
+            targetSlide = currentSlide.nextElementSibling;
         }
-        currentSlide.classList.remove('current--slide');
-        targetSlide.classList.add('current--slide');
-        console.log(targetSlide.style.left);
-        if (currentIndex === 0) {
-            hideButton(leftButton);
-        }
-        if (currentIndex !== indicators.length - 1) {
-            showButton(rightButton);
-        }
-        if(currentIndex !== 0) {
-            showButton(leftButton);
-        }
-        if(currentIndex === indicators.length - 1) {
-            hideButton(rightButton);
-        }
+        moveTrack(targetSlide);
+        setButtons(currentIndex);
+        setCurrentSlideClass(currentSlide, targetSlide);
         resetIndicators(indicators, currentIndex);
     }
 
