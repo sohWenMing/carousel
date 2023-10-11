@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const leftButton = document.querySelector('.carousel__button--left');
     const rightButton = document.querySelector('.carousel__button--right');
     const indicators = document.querySelectorAll('.carousel__indicator');
+    const indicatorsArray = Array.from(indicators)
+    
     leftButton.style.display = "none";
    
     function scroll(direction) {
@@ -88,5 +90,18 @@ document.addEventListener("DOMContentLoaded", () => {
     rightButton.addEventListener('click', function scrollRight() {
         scroll("right");
     })
+
+    indicators.forEach((indicator) => {
+        indicator.addEventListener('click', function clickIndicator() {
+            // console.log(`indicator number ${indicatorsArray.indexOf(indicator)}`);
+            let currentSlide = document.querySelector('.current--slide');
+            let targetSlide = slides[indicatorsArray.indexOf(indicator)];
+            currentIndex = indicatorsArray.indexOf(indicator);
+            moveTrack(targetSlide);
+            setCurrentSlideClass(currentSlide, targetSlide);
+            setButtons(currentIndex);
+            resetIndicators(indicators, currentIndex);
+        })
+    });
 
 })
